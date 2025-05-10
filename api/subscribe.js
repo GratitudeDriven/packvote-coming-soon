@@ -7,9 +7,9 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 // Determine which schema to use based on environment variables
 // VERCEL_ENV is automatically set by Vercel: 'production', 'preview', or 'development'
 // We'll use 'prod' for production (main branch) and 'dev' for others
-const dbSchema = process.env.VERCEL_ENV === 'production' ? 'prod' : 'dev';
+const tablePrefix = process.env.VERCEL_ENV === 'production' ? 'prod_' : 'dev_';
 
-console.log(`Using database schema: ${dbSchema}`);
+console.log(`Using table prefix: ${tablePrefix}`);
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -30,12 +30,9 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: 'Valid email is required' });
     }
 
-    // Set schema for all operations
-    supabase.schema(dbSchema);
-
-    // Insert email into Supabase table
+    // Insert email into Supabase table with the correct table name including prefix
     const { data, error } = await supabase
-      .from('email_subscribers')
+      .from(`${tablePrefix}email_subscribers`)
       .insert([
         { 
           email,

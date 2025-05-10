@@ -11,7 +11,6 @@ import {
   Snackbar,
   Alert,
   CircularProgress,
-  Link,
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LinkIcon from '@mui/icons-material/Link';
@@ -21,7 +20,6 @@ import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import '../styles/LandingPage.css';
 
 const LandingPage = () => {
@@ -69,7 +67,7 @@ const LandingPage = () => {
               Where should we go?
             </Typography>
             <Typography variant="h6" color="text.secondary" paragraph>
-              AI-powered planning that picks the perfect destination for your crew in minutes.
+              AI-powered planning that picks the perfect dates, destination, and activities for your crew in minutes.
             </Typography>
             <Typography variant="body1" color="text.secondary" paragraph>
               Coming soon! Join our waitlist to be the first to know when we launch.
@@ -167,14 +165,9 @@ const LandingPage = () => {
       <footer className="footer">
         <Container maxWidth="lg">
           <div className="footer-content">
-            {/* "Keep the API lights on" section removed as requested */}
             <Typography variant="body1" align="center" className="footer-tagline">
               ✈️ Made for group travel lovers
             </Typography>
-            <div className="footer-links">
-              <Link href="/privacy">Privacy</Link>
-              <Link href="/contact">Contact</Link>
-            </div>
           </div>
         </Container>
       </footer>
