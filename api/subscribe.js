@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   // Add CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, Prefer');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
   
   // Handle preflight requests
   if (req.method === 'OPTIONS') {
@@ -47,7 +47,11 @@ export default async function handler(req, res) {
 
     console.log(`Attempting to insert email: ${email} into table: email_subscribers in schema: ${schema}`);
 
-    // Insert email into Supabase table with headers for schema
+    // Set the schema for this request 
+    // In JavaScript, we need to use postgrest directly like the Python implementation
+    supabase.postgrest.schema(schema);
+
+    // Insert email into email_subscribers table
     const { data, error } = await supabase
       .from('email_subscribers')
       .insert([
@@ -56,12 +60,7 @@ export default async function handler(req, res) {
           source,
           created_at: new Date().toISOString()
         }
-      ])
-      .select() // Explicitly requesting a response
-      .headers({
-        'Prefer': 'return=minimal',
-        'X-Schema': schema // This is the proper way to specify schema in Supabase REST API
-      });
+      ]);
 
     if (error) {
       console.error('Supabase insert error:', error);
