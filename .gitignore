@@ -30,3 +30,5 @@ yarn-error.log*
 *.swo 
 
 package-lock.json
+
+db_schema_permissions.sql
