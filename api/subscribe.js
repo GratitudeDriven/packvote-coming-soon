@@ -45,18 +45,18 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: 'Valid email is required' });
     }
 
-    console.log(`Attempting to insert email: ${email} into table: ${schema}.email_subscribers`);
+    // Creating the table name with schema
+    const tableName = `${schema}.email_subscribers`;
+    console.log(`Attempting to insert email: ${email} into table: ${tableName}`);
 
-    // In JavaScript, we need to directly specify the schema in the table name
+    // Insert directly into the schema.email_subscribers table
     const { data, error } = await supabase
-      .from(`${schema}.email_subscribers`)
-      .insert([
-        { 
-          email,
-          source,
-          created_at: new Date().toISOString()
-        }
-      ]);
+      .from(tableName)
+      .insert([{ 
+        email,
+        source,
+        created_at: new Date().toISOString()
+      }]);
 
     if (error) {
       console.error('Supabase insert error:', error);
