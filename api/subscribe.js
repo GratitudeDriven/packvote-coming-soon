@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   // Add CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, Prefer');
   
   // Handle preflight requests
   if (req.method === 'OPTIONS') {
@@ -38,25 +38,30 @@ export default async function handler(req, res) {
 
   try {
     // Get email from request body
-    const { email } = req.body;
+    const { email, source = 'coming_soon_page' } = req.body;
 
     // Validate email
     if (!email || !email.includes('@')) {
       return res.status(400).json({ message: 'Valid email is required' });
     }
 
-    console.log(`Attempting to insert email: ${email} into table: ${schema}.email_subscribers`);
+    console.log(`Attempting to insert email: ${email} into table: email_subscribers in schema: ${schema}`);
 
-    // Insert email into Supabase table using explicit schema.table notation
+    // Insert email into Supabase table with headers for schema
     const { data, error } = await supabase
-      .from(`${schema}.email_subscribers`)
+      .from('email_subscribers')
       .insert([
         { 
           email,
-          source: 'coming_soon_page',
+          source,
           created_at: new Date().toISOString()
         }
-      ]);
+      ])
+      .select() // Explicitly requesting a response
+      .headers({
+        'Prefer': 'return=minimal',
+        'X-Schema': schema // This is the proper way to specify schema in Supabase REST API
+      });
 
     if (error) {
       console.error('Supabase insert error:', error);

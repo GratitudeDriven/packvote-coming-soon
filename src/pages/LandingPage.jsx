@@ -34,8 +34,19 @@ const LandingPage = () => {
     setLoading(true);
     
     try {
-      // Submit email to our API endpoint
-      await axios.post('/api/subscribe', { email });
+      // Submit email to our API endpoint with proper headers
+      await axios.post('/api/subscribe', 
+        { 
+          email, 
+          source: 'coming_soon_page'
+        }, 
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }
+      );
       setShowSuccess(true);
       setEmail('');
     } catch (error) {
