@@ -67,7 +67,7 @@ const LandingPage = () => {
               Where should we go?
             </Typography>
             <Typography variant="h6" color="text.secondary" paragraph>
-              AI-powered planning that picks the perfect dates, destination, and activities for your crew in minutes.
+              AI-powered planning that picks the perfect date, destination, and activities for your crew in minutes.
             </Typography>
             <Typography variant="body1" color="text.secondary" paragraph>
               Coming soon! Join our waitlist to be the first to know when we launch.
