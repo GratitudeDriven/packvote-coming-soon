@@ -7,9 +7,8 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 // Determine which schema to use based on environment variables
 // VERCEL_ENV is automatically set by Vercel: 'production', 'preview', or 'development'
 // We'll use 'prod' for production (main branch) and 'dev' for others
-const tablePrefix = process.env.VERCEL_ENV === 'production' ? 'prod_' : 'dev_';
-
-console.log(`Using table prefix: ${tablePrefix}`);
+const schema = process.env.VERCEL_ENV === 'production' ? 'prod' : 'dev';
+console.log(`Using schema: ${schema}`);
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -21,6 +20,22 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
+  // Add CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // Check if Supabase credentials are properly set
+  if (!supabaseUrl || !supabaseKey) {
+    console.error('Supabase credentials missing');
+    return res.status(500).json({ message: 'Server configuration error' });
+  }
+
   try {
     // Get email from request body
     const { email } = req.body;
@@ -30,9 +45,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: 'Valid email is required' });
     }
 
-    // Insert email into Supabase table with the correct table name including prefix
+    console.log(`Attempting to insert email: ${email} into table: ${schema}.email_subscribers`);
+
+    // Insert email into Supabase table using explicit schema.table notation
     const { data, error } = await supabase
-      .from(`${tablePrefix}email_subscribers`)
+      .from(`${schema}.email_subscribers`)
       .insert([
         { 
           email,
@@ -42,6 +59,8 @@ export default async function handler(req, res) {
       ]);
 
     if (error) {
+      console.error('Supabase insert error:', error);
+      
       // Check if it's a duplicate email error
       if (error.code === '23505') { // PostgreSQL unique violation code
         return res.status(409).json({ message: 'You are already subscribed!' });
