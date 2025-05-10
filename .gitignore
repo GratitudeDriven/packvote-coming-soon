@@ -31,4 +31,4 @@ yarn-error.log*
 
 package-lock.json
 
-db_schema_permissions.sql
+database/
