@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { 
   Box, 
   Container, 
@@ -9,6 +10,8 @@ import {
   TextField,
   Snackbar,
   Alert,
+  CircularProgress,
+  Paper,
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LinkIcon from '@mui/icons-material/Link';
@@ -19,16 +22,31 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import '../styles/LandingPage.css';
 
 const LandingPage = () => {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement email collection logic
-    setShowSuccess(true);
-    setEmail('');
+    setLoading(true);
+    
+    try {
+      // Submit email to our API endpoint
+      await axios.post('/api/subscribe', { email });
+      setShowSuccess(true);
+      setEmail('');
+    } catch (error) {
+      console.error('Error subscribing:', error);
+      setErrorMessage(error.response?.data?.message || 'Failed to subscribe. Please try again.');
+      setShowError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -74,15 +92,17 @@ const LandingPage = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
                   required
+                  disabled={loading}
                 />
                 <Button
                   variant="contained"
                   size="large"
-                  endIcon={<ArrowForwardIcon />}
+                  endIcon={loading ? <CircularProgress size={20} color="inherit" /> : <ArrowForwardIcon />}
                   type="submit"
                   className="primary-button"
+                  disabled={loading}
                 >
-                  Join Waitlist
+                  {loading ? 'Joining...' : 'Join Waitlist'}
                 </Button>
               </Box>
             </form>
@@ -102,52 +122,52 @@ const LandingPage = () => {
           How It Works
         </Typography>
         <div className="features-section">
-          <div className="feature">
+          <Paper elevation={2} className="feature">
             <div className="feature-icon">
-              <LinkIcon />
+              <LinkIcon fontSize="inherit" />
             </div>
-            <h3>1. Create a trip link</h3>
-            <p>Start your adventure with one click</p>
-          </div>
-          <div className="feature">
+            <Typography variant="h6" component="h3">1. Create a trip link</Typography>
+            <Typography variant="body2">Start your adventure with one click</Typography>
+          </Paper>
+          <Paper elevation={2} className="feature">
             <div className="feature-icon">
-              <QuestionAnswerIcon />
+              <QuestionAnswerIcon fontSize="inherit" />
             </div>
-            <h3>2. Friends fill one quick questionnaire</h3>
-            <p>Quick preferences from everyone</p>
-          </div>
-          <div className="feature">
+            <Typography variant="h6" component="h3">2. Friends fill one quick questionnaire</Typography>
+            <Typography variant="body2">Quick preferences from everyone</Typography>
+          </Paper>
+          <Paper elevation={2} className="feature">
             <div className="feature-icon">
-              <ExploreIcon />
+              <ExploreIcon fontSize="inherit" />
             </div>
-            <h3>3. AI suggests 3 perfect destinations</h3>
-            <p>Matched to your group's needs</p>
-          </div>
-          <div className="feature">
+            <Typography variant="h6" component="h3">3. AI suggests 3 perfect destinations</Typography>
+            <Typography variant="body2">Matched to your group's needs</Typography>
+          </Paper>
+          <Paper elevation={2} className="feature">
             <div className="feature-icon">
-              <HowToVoteIcon />
+              <HowToVoteIcon fontSize="inherit" />
             </div>
-            <h3>4. Vote and book</h3>
-            <p>Democracy wins!</p>
-          </div>
+            <Typography variant="h6" component="h3">4. Vote and book</Typography>
+            <Typography variant="body2">Democracy wins!</Typography>
+          </Paper>
         </div>
       </Container>
 
       {/* Benefits */}
       <Container maxWidth="lg">
         <div className="benefits-section">
-          <div className="benefit">
+          <Paper elevation={1} className="benefit">
             <AccessTimeIcon />
-            <p>Skips annoying back-and-forth</p>
-          </div>
-          <div className="benefit">
+            <Typography variant="body1">Skips annoying back-and-forth</Typography>
+          </Paper>
+          <Paper elevation={1} className="benefit">
             <AccountBalanceWalletIcon />
-            <p>Aligns budgets & vibes</p>
-          </div>
-          <div className="benefit">
+            <Typography variant="body1">Aligns budgets & vibes</Typography>
+          </Paper>
+          <Paper elevation={1} className="benefit">
             <PhoneIphoneIcon />
-            <p>No app download required</p>
-          </div>
+            <Typography variant="body1">No app download required</Typography>
+          </Paper>
         </div>
       </Container>
 
@@ -155,10 +175,10 @@ const LandingPage = () => {
       <footer className="footer">
         <Container maxWidth="lg">
           <div className="footer-content">
-            <div className="footer-donate">
+            <Paper elevation={3} className="footer-donate">
               <div className="footer-donate-text">
                 <LightbulbIcon />
-                <Typography>Keep the API lights on</Typography>
+                <Typography variant="body1">Keep the API lights on</Typography>
               </div>
               <Button 
                 variant="contained"
@@ -167,7 +187,7 @@ const LandingPage = () => {
               >
                 Join Waitlist
               </Button>
-            </div>
+            </Paper>
             <Typography variant="body1" align="center" className="footer-tagline">
               ✈️ Made for group travel lovers
             </Typography>
@@ -182,6 +202,16 @@ const LandingPage = () => {
       >
         <Alert severity="success" onClose={() => setShowSuccess(false)}>
           Thanks for joining our waitlist! We'll keep you updated.
+        </Alert>
+      </Snackbar>
+
+      <Snackbar 
+        open={showError} 
+        autoHideDuration={6000} 
+        onClose={() => setShowError(false)}
+      >
+        <Alert severity="error" onClose={() => setShowError(false)}>
+          {errorMessage}
         </Alert>
       </Snackbar>
     </div>
