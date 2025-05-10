@@ -11,7 +11,7 @@ import {
   Snackbar,
   Alert,
   CircularProgress,
-  Paper,
+  Link,
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LinkIcon from '@mui/icons-material/Link';
@@ -57,15 +57,7 @@ const LandingPage = () => {
           <Typography variant="h6" component="div" sx={{ color: 'primary.main', fontWeight: 600 }}>
             PackVote
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-            <Button 
-              variant="contained" 
-              href="#signup"
-              className="primary-button"
-            >
-              Join Waitlist
-            </Button>
-          </Box>
+          {/* Navigation links removed as requested */}
         </Toolbar>
       </AppBar>
 
@@ -122,52 +114,52 @@ const LandingPage = () => {
           How It Works
         </Typography>
         <div className="features-section">
-          <Paper elevation={2} className="feature">
+          <div className="feature">
             <div className="feature-icon">
-              <LinkIcon fontSize="inherit" />
+              <LinkIcon />
             </div>
-            <Typography variant="h6" component="h3">1. Create a trip link</Typography>
-            <Typography variant="body2">Start your adventure with one click</Typography>
-          </Paper>
-          <Paper elevation={2} className="feature">
+            <h3>1. Create a trip link</h3>
+            <p>Start your adventure with one click</p>
+          </div>
+          <div className="feature">
             <div className="feature-icon">
-              <QuestionAnswerIcon fontSize="inherit" />
+              <QuestionAnswerIcon />
             </div>
-            <Typography variant="h6" component="h3">2. Friends fill one quick questionnaire</Typography>
-            <Typography variant="body2">Quick preferences from everyone</Typography>
-          </Paper>
-          <Paper elevation={2} className="feature">
+            <h3>2. Friends fill one quick questionnaire</h3>
+            <p>Quick preferences from everyone</p>
+          </div>
+          <div className="feature">
             <div className="feature-icon">
-              <ExploreIcon fontSize="inherit" />
+              <ExploreIcon />
             </div>
-            <Typography variant="h6" component="h3">3. AI suggests 3 perfect destinations</Typography>
-            <Typography variant="body2">Matched to your group's needs</Typography>
-          </Paper>
-          <Paper elevation={2} className="feature">
+            <h3>3. AI suggests 3 perfect destinations</h3>
+            <p>Matched to your group's needs</p>
+          </div>
+          <div className="feature">
             <div className="feature-icon">
-              <HowToVoteIcon fontSize="inherit" />
+              <HowToVoteIcon />
             </div>
-            <Typography variant="h6" component="h3">4. Vote and book</Typography>
-            <Typography variant="body2">Democracy wins!</Typography>
-          </Paper>
+            <h3>4. Vote and book</h3>
+            <p>Democracy wins!</p>
+          </div>
         </div>
       </Container>
 
       {/* Benefits */}
       <Container maxWidth="lg">
         <div className="benefits-section">
-          <Paper elevation={1} className="benefit">
+          <div className="benefit">
             <AccessTimeIcon />
-            <Typography variant="body1">Skips annoying back-and-forth</Typography>
-          </Paper>
-          <Paper elevation={1} className="benefit">
+            <p>Skips annoying back-and-forth</p>
+          </div>
+          <div className="benefit">
             <AccountBalanceWalletIcon />
-            <Typography variant="body1">Aligns budgets & vibes</Typography>
-          </Paper>
-          <Paper elevation={1} className="benefit">
+            <p>Aligns budgets & vibes</p>
+          </div>
+          <div className="benefit">
             <PhoneIphoneIcon />
-            <Typography variant="body1">No app download required</Typography>
-          </Paper>
+            <p>No app download required</p>
+          </div>
         </div>
       </Container>
 
@@ -175,22 +167,14 @@ const LandingPage = () => {
       <footer className="footer">
         <Container maxWidth="lg">
           <div className="footer-content">
-            <Paper elevation={3} className="footer-donate">
-              <div className="footer-donate-text">
-                <LightbulbIcon />
-                <Typography variant="body1">Keep the API lights on</Typography>
-              </div>
-              <Button 
-                variant="contained"
-                href="#signup"
-                className="footer-donate-button"
-              >
-                Join Waitlist
-              </Button>
-            </Paper>
+            {/* "Keep the API lights on" section removed as requested */}
             <Typography variant="body1" align="center" className="footer-tagline">
               ✈️ Made for group travel lovers
             </Typography>
+            <div className="footer-links">
+              <Link href="/privacy">Privacy</Link>
+              <Link href="/contact">Contact</Link>
+            </div>
           </div>
         </Container>
       </footer>

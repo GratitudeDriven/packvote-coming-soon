@@ -1,18 +1,19 @@
 :root {
-  --color-primary: #1976d2;
-  --color-primary-dark: #1565c0;
-  --color-background: #f8f9fa;
-  --color-background-alt: #f0f2f5;
-  --color-white: #ffffff;
-  --color-text: #333333;
+  --color-primary: #FF6B2C; /* Orange from main app */
+  --color-primary-dark: #E55A1F; /* Darker orange from main app */
+  --color-background: #FFF8F3; /* Light beige from main app */
+  --color-background-alt: #B4E4DA; /* Light teal from main app */
+  --color-white: #FFFFFF;
+  --color-text: #1A2238; /* Dark navy from main app */
   --color-text-secondary: #666666;
+  --color-accent: #5aaa95; /* Green accent color */
   --radius-sm: 4px;
   --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-lg: 16px;
   --radius-full: 9999px;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05);
 }
 
 .landing-page {
@@ -23,61 +24,122 @@
   background-color: var(--color-background);
 }
 
-/* Navigation */
-.MuiAppBar-root {
-  box-shadow: var(--shadow-sm) !important;
+.header {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+  position: fixed;
+  width: 100%;
+  z-index: 10;
 }
 
-/* Hero Section */
+.header h1 {
+  font-size: 2.5rem;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+
+.header p {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .hero-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 120px 0 80px;
-  gap: 40px;
+  gap: 4rem;
+  padding: 8rem 2rem 4rem;
+  margin: 0 -2rem;
   background: linear-gradient(to bottom, var(--color-white) 0%, var(--color-background) 100%);
 }
 
 .hero-text {
   flex: 1;
-  max-width: 600px;
 }
 
 .hero-text h1 {
-  font-size: 3.5rem !important;
-  font-weight: 700 !important;
-  line-height: 1.2 !important;
-  margin-bottom: 1.5rem !important;
+  font-size: 3.5rem;
+  font-weight: 700;
   color: var(--color-text);
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
 }
 
 .hero-text p {
-  line-height: 1.6 !important;
+  font-size: 1.25rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
 }
 
 .hero-image {
   flex: 1;
-  max-width: 500px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
+  position: relative;
 }
 
 .hero-image img {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
-  border-radius: var(--radius-lg);
+  aspect-ratio: 4/3;
   transition: transform 0.3s ease;
 }
 
-.hero-image img:hover {
+.hero-image:hover img {
   transform: scale(1.05);
 }
 
-/* Features Section */
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.primary-button,
+.secondary-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.primary-button {
+  background-color: var(--color-primary) !important;
+  color: var(--color-white) !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  padding: 10px 24px !important;
+  border-radius: var(--radius-md) !important;
+  transition: all 0.2s ease !important;
+}
+
+.primary-button:hover {
+  background-color: var(--color-primary-dark) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.features-container {
+  background-color: var(--color-background);
+  padding: 4rem 0;
+}
+
 .section-title {
-  margin: 80px 0 40px !important;
+  margin-bottom: 3rem !important;
   font-size: 2.5rem !important;
   font-weight: 600 !important;
   color: var(--color-text);
@@ -86,13 +148,13 @@
 .features-section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 40px;
-  margin-bottom: 80px;
+  gap: 2rem;
+  margin-top: 4rem;
 }
 
 .feature {
   text-align: center;
-  padding: 30px 20px;
+  padding: 2rem;
   background-color: var(--color-white);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
@@ -112,33 +174,31 @@
 }
 
 .feature h3 {
-  margin-bottom: 15px;
   font-size: 1.5rem;
-  font-weight: 600;
   color: var(--color-text);
+  margin-bottom: 1rem;
 }
 
 .feature p {
   color: var(--color-text-secondary);
 }
 
-/* Benefits Section */
 .benefits-section {
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 40px;
-  margin: 80px 0;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 3rem 0;
   background-color: var(--color-background-alt);
-  padding: 40px;
   border-radius: var(--radius-lg);
+  margin: 4rem 0;
 }
 
 .benefit {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 15px 20px;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
   background-color: var(--color-white);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -151,59 +211,60 @@
 }
 
 .benefit svg {
-  color: var(--color-primary);
-  font-size: 24px;
+  color: var(--color-background-alt); /* Using teal from main app */
+  font-size: 1.5rem;
 }
 
 .benefit p {
-  margin: 0;
-  font-weight: 500;
   color: var(--color-text);
+  font-weight: 500;
+  margin: 0;
 }
 
-/* Footer */
 .footer {
   background-color: var(--color-primary);
-  padding: 40px 0;
-  margin-top: 80px;
-  color: var(--color-white);
+  padding: 3rem 0;
+  margin-top: auto;
 }
 
 .footer-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 2rem;
 }
 
 .footer-donate {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 20px 30px;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 1.5rem 2.5rem;
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  gap: 1.5rem;
   border-radius: var(--radius-lg);
-  margin-bottom: 20px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .footer-donate-text {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.75rem;
   color: var(--color-text);
+  font-size: 1.1rem;
   font-weight: 500;
 }
 
 .footer-donate-text svg {
+  font-size: 1.25rem;
   color: var(--color-primary);
 }
 
 .footer-donate-button {
   background-color: var(--color-background-alt) !important;
   color: var(--color-text) !important;
+  padding: 0.75rem 1.5rem !important;
   font-weight: 600 !important;
-  padding: 10px 20px !important;
-  border-radius: var(--radius-md) !important;
   transition: all 0.2s ease !important;
   text-transform: none !important;
 }
@@ -220,21 +281,20 @@
   opacity: 0.9;
 }
 
-/* Buttons */
-.primary-button {
-  background-color: var(--color-primary) !important;
-  color: var(--color-white) !important;
-  text-transform: none !important;
-  font-weight: 600 !important;
-  padding: 10px 24px !important;
-  border-radius: var(--radius-md) !important;
-  transition: all 0.2s ease !important;
+.footer-links {
+  display: flex;
+  gap: 2rem;
 }
 
-.primary-button:hover {
-  background-color: var(--color-primary-dark) !important;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+.footer-links a {
+  color: var(--color-white);
+  opacity: 0.8;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.footer-links a:hover {
+  opacity: 1;
 }
 
 /* Form fields */
@@ -243,43 +303,59 @@
   border-radius: var(--radius-md);
 }
 
-/* Media Queries */
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
+  .hero-section {
+    padding: 7rem 1.5rem 3.5rem;
+    gap: 3rem;
+  }
+  
+  .hero-text h1 {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
   .hero-section {
     flex-direction: column;
     text-align: center;
-    padding: 100px 0 60px;
+    padding: 6rem 1rem 3rem;
   }
-
+  
   .hero-text {
-    max-width: 100%;
+    order: 1;
   }
-
+  
   .hero-text h1 {
-    font-size: 2.8rem !important;
+    font-size: 2.5rem;
   }
-
+  
   .hero-image {
+    order: 0;
     max-width: 100%;
   }
-
-  .features-section {
-    grid-template-columns: 1fr;
-  }
-
+  
   .benefits-section {
     flex-direction: column;
-    align-items: center;
-    padding: 30px 20px;
+    padding: 2rem 1rem;
   }
-
+  
   .benefit {
     width: 100%;
   }
-
+  
+  .footer {
+    padding: 2rem 0;
+  }
+  
   .footer-donate {
     flex-direction: column;
+    padding: 1.5rem;
     text-align: center;
-    padding: 20px;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
 } 

@@ -7,16 +7,17 @@ import CssBaseline from '@mui/material/CssBaseline';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
-      dark: '#1565c0',
+      main: '#FF6B2C',
+      light: '#FF8F5E',
+      dark: '#E55A1F',
     },
     text: {
-      primary: '#333333',
+      primary: '#1A2238',
       secondary: '#666666',
     },
     background: {
-      default: '#f8f9fa',
-      paper: '#ffffff',
+      default: '#FFF8F3',
+      paper: '#FFFFFF',
     },
   },
   typography: {
@@ -45,9 +46,9 @@ const theme = createTheme({
   },
   shadows: [
     'none',
-    '0 2px 8px rgba(0, 0, 0, 0.05)',
-    '0 4px 12px rgba(0, 0, 0, 0.1)',
-    '0 8px 24px rgba(0, 0, 0, 0.12)',
+    '0 1px 2px rgba(0, 0, 0, 0.05)',
+    '0 4px 6px rgba(0, 0, 0, 0.05)',
+    '0 10px 15px rgba(0, 0, 0, 0.05)',
     // ... rest of the shadows array
   ],
   components: {
@@ -66,7 +67,7 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
         },
       },
     },
@@ -74,7 +75,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 12,
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
         },
       },
     },
