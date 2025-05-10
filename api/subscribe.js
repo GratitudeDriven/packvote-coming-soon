@@ -45,15 +45,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: 'Valid email is required' });
     }
 
-    console.log(`Attempting to insert email: ${email} into table: email_subscribers in schema: ${schema}`);
+    console.log(`Attempting to insert email: ${email} into table: ${schema}.email_subscribers`);
 
-    // Set the schema for this request 
-    // In JavaScript, we need to use postgrest directly like the Python implementation
-    supabase.postgrest.schema(schema);
-
-    // Insert email into email_subscribers table
+    // In JavaScript, we need to directly specify the schema in the table name
     const { data, error } = await supabase
-      .from('email_subscribers')
+      .from(`${schema}.email_subscribers`)
       .insert([
         { 
           email,
