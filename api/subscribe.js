@@ -8,6 +8,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 // VERCEL_ENV is automatically set by Vercel: 'production', 'preview', or 'development'
 // We'll use 'prod' for production (main branch) and 'dev' for others
 const schema = process.env.VERCEL_ENV === 'production' ? 'prod' : 'dev';
+console.log(`VERCEL_ENV: ${process.env.VERCEL_ENV}`);
 console.log(`Using schema: ${schema}`);
 
 // Create a single supabase client for interacting with your database
@@ -46,46 +47,78 @@ export default async function handler(req, res) {
     }
 
     console.log(`Attempting to insert email: ${email} into table: email_subscribers in schema: ${schema}`);
-
-    // Use direct fetch approach with Supabase for full header control
-    const response = await fetch(`${supabaseUrl}/rest/v1/email_subscribers`, {
-      method: 'POST',
-      headers: {
+    console.log(`Request host: ${req.headers.host}`);
+    
+    // Option 1: Use Supabase SDK with schema specification
+    try {
+      // Try first with the SDK
+      const { data, error } = await supabase
+        .schema(schema)
+        .from('email_subscribers')
+        .insert({ 
+          email, 
+          source,
+          created_at: new Date().toISOString()
+        });
+        
+      if (error) {
+        console.error('Supabase SDK insert error:', error);
+        throw error;
+      }
+      
+      console.log('Successfully inserted with SDK:', data);
+      return res.status(200).json({ 
+        message: 'Thanks for subscribing! We\'ll keep you updated on our launch.',
+        data
+      });
+    } catch (sdkError) {
+      console.log('SDK approach failed, trying direct fetch:', sdkError);
+      
+      // Option 2: Direct fetch as fallback
+      // Use direct fetch approach with Supabase for full header control
+      const headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'apikey': supabaseKey,
         'Authorization': `Bearer ${supabaseKey}`,
         'Prefer': 'return=minimal',
         'x-schema': schema
-      },
-      body: JSON.stringify({ 
-        email, 
-        source,
-        created_at: new Date().toISOString()
-      })
-    });
-
-    // Parse the response
-    const result = await response.json().catch(() => null);
-    
-    if (!response.ok) {
-      const error = result || { message: 'Unknown error occurred' };
-      console.error('Supabase insert error:', error);
+      };
       
-      // Check if it's a duplicate email error (status 409 or error code 23505)
-      if (response.status === 409 || (error.code === '23505') || 
-          (error.message && error.message.includes('already exists'))) {
-        return res.status(409).json({ message: 'You are already subscribed!' });
+      console.log('Using headers:', JSON.stringify(headers));
+      
+      const response = await fetch(`${supabaseUrl}/rest/v1/email_subscribers`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ 
+          email, 
+          source,
+          created_at: new Date().toISOString()
+        })
+      });
+
+      // Parse the response
+      const result = await response.json().catch(() => null);
+      
+      if (!response.ok) {
+        const error = result || { message: 'Unknown error occurred' };
+        console.error('Supabase insert error:', error);
+        
+        // Check if it's a duplicate email error (status 409 or error code 23505)
+        if (response.status === 409 || (error.code === '23505') || 
+            (error.message && error.message.includes('already exists'))) {
+          return res.status(409).json({ message: 'You are already subscribed!' });
+        }
+        
+        throw new Error(error.message || 'Server error');
       }
-      
-      throw new Error(error.message || 'Server error');
-    }
 
-    // Return success response
-    return res.status(200).json({ 
-      message: 'Thanks for subscribing! We\'ll keep you updated on our launch.',
-      data: result
-    });
+      // Return success response
+      return res.status(200).json({ 
+        message: 'Thanks for subscribing! We\'ll keep you updated on our launch.',
+        data: result
+      });
+    }
 
   } catch (error) {
     console.error('Subscription error:', error);
