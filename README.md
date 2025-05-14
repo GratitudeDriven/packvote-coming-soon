@@ -6,7 +6,7 @@ This is a temporary landing page for PackVote, an AI-powered travel planning app
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-org/packvote-coming-soon.git
+git clone https://github.com/GratitudeDriven/packvote-coming-soon.git
 cd packvote-coming-soon
 ```
 
@@ -37,19 +37,6 @@ This repository follows a structured development workflow with separate developm
 - `main` - Production branch, protected from direct pushes
 - `dev` - Development branch for testing changes before production
 
-### Branch Protection Setup
-To enable branch protection in GitHub:
-
-1. Go to the repository on GitHub
-2. Navigate to Settings > Branches
-3. Under "Branch protection rules", click "Add rule"
-4. For the "main" branch:
-   - Check "Require a pull request before merging"
-   - Check "Require approvals" (at least 1)
-   - Check "Require status checks to pass before merging"
-   - Select the CI workflow status checks
-   - Check "Include administrators" to apply rules to everyone
-   - Click "Create"
 
 ### Environment Configuration
 - Development environment uses development Supabase project
