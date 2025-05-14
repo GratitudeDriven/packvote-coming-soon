@@ -21,11 +21,13 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        
+    
     - name: Install dependencies
+      working-directory: ${{ github.workspace }}
       run: npm ci
         
     - name: Build
+      working-directory: ${{ github.workspace }}
       run: npm run build
       env:
         CI: true 
