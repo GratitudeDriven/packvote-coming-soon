@@ -19,7 +19,7 @@ jobs:
       - name: Deploy to Vercel (Development)
         run: |
           npm install --global vercel
-          vercel --token ${{ secrets.VERCEL_TOKEN }} --confirm --name packvote-coming-soon --scope ${{ secrets.VERCEL_ORG_ID }} --env NEXT_PUBLIC_SUPABASE_URL=${{ secrets.DEV_SUPABASE_URL }} --env NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.DEV_SUPABASE_ANON_KEY }}
+          vercel --token ${{ secrets.VERCEL_TOKEN }} --confirm --name packvote-coming-soon --scope ${{ secrets.VERCEL_ORG_ID }} --env NEXT_PUBLIC_SUPABASE_URL=${{ secrets.SUPABASE_URL }} --env NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} --env NEXT_PUBLIC_SUPABASE_SCHEMA=dev
 
   deploy-prod:
     if: github.ref == 'refs/heads/main'
@@ -36,7 +36,7 @@ jobs:
       - name: Deploy to Vercel (Production)
         run: |
           npm install --global vercel
-          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --confirm --name packvote-coming-soon --scope ${{ secrets.VERCEL_ORG_ID }} --env NEXT_PUBLIC_SUPABASE_URL=${{ secrets.PROD_SUPABASE_URL }} --env NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.PROD_SUPABASE_ANON_KEY }}
+          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --confirm --name packvote-coming-soon --scope ${{ secrets.VERCEL_ORG_ID }} --env NEXT_PUBLIC_SUPABASE_URL=${{ secrets.SUPABASE_URL }} --env NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} --env NEXT_PUBLIC_SUPABASE_SCHEMA=public
   
   build:
     runs-on: ubuntu-latest
