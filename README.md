@@ -27,7 +27,7 @@ npm run dev
 
 ## Deployment
 
-The application is deployed to Vercel automatically through GitHub Actions.
+The application is deployed to Vercel automatically.
 
 ## Development Workflow
 
@@ -36,17 +36,6 @@ This repository follows a structured development workflow with separate developm
 ### Branch Structure
 - `main` - Production branch, protected from direct pushes
 - `dev` - Development branch for testing changes before production
-
-
-### Environment Configuration
-- Development environment uses development Supabase project
-- Production environment uses production Supabase project
-- Environment variables are stored as GitHub Secrets and used by the deployment workflows
-
-### CI/CD Pipeline
-- Build verification runs automatically on both `dev` and `main` branches
-- Development deployments occur automatically when changes are pushed to `dev`
-- Production deployments require passing builds and occur after merging to `main`
 
 ### Development Process
 1. Create feature branches from `dev`
