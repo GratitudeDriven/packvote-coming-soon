@@ -8,8 +8,13 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 // VERCEL_ENV is automatically set by Vercel: 'production', 'preview', or 'development'
 // We'll use 'prod' for production (main branch) and 'dev' for others
 const schema = process.env.VERCEL_ENV === 'production' ? 'prod' : 'dev';
-console.log(`VERCEL_ENV: ${process.env.VERCEL_ENV}`);
-console.log(`Using schema: ${schema}`);
+const isProd = process.env.VERCEL_ENV === 'production';
+
+// Only log in non-production environments
+if (!isProd) {
+  console.log(`VERCEL_ENV: ${process.env.VERCEL_ENV}`);
+  console.log(`Using schema: ${schema}`);
+}
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -33,7 +38,9 @@ export default async function handler(req, res) {
 
   // Check if Supabase credentials are properly set
   if (!supabaseUrl || !supabaseKey) {
-    console.error('Supabase credentials missing');
+    if (!isProd) {
+      console.error('Supabase credentials missing');
+    }
     return res.status(500).json({ message: 'Server configuration error' });
   }
 
@@ -46,8 +53,10 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: 'Valid email is required' });
     }
 
-    console.log(`Attempting to insert email: ${email} into table: email_subscribers in schema: ${schema}`);
-    console.log(`Request host: ${req.headers.host}`);
+    if (!isProd) {
+      console.log(`Attempting to insert email: ${email} into table: email_subscribers in schema: ${schema}`);
+      console.log(`Request host: ${req.headers.host}`);
+    }
     
     // Option 1: Use Supabase SDK with schema specification
     try {
@@ -62,17 +71,23 @@ export default async function handler(req, res) {
         });
         
       if (error) {
-        console.error('Supabase SDK insert error:', error);
+        if (!isProd) {
+          console.error('Supabase SDK insert error:', error);
+        }
         throw error;
       }
       
-      console.log('Successfully inserted with SDK:', data);
+      if (!isProd) {
+        console.log('Successfully inserted with SDK:', data);
+      }
       return res.status(200).json({ 
         message: 'Thanks for subscribing! We\'ll keep you updated on our launch.',
         data
       });
     } catch (sdkError) {
-      console.log('SDK approach failed, trying direct fetch:', sdkError);
+      if (!isProd) {
+        console.log('SDK approach failed, trying direct fetch:', sdkError);
+      }
       
       // Option 2: Direct fetch as fallback
       // Use direct fetch approach with Supabase for full header control
@@ -85,7 +100,9 @@ export default async function handler(req, res) {
         'x-schema': schema
       };
       
-      console.log('Using headers:', JSON.stringify(headers));
+      if (!isProd) {
+        console.log('Using headers:', JSON.stringify(headers));
+      }
       
       const response = await fetch(`${supabaseUrl}/rest/v1/email_subscribers`, {
         method: 'POST',
@@ -102,7 +119,9 @@ export default async function handler(req, res) {
       
       if (!response.ok) {
         const error = result || { message: 'Unknown error occurred' };
-        console.error('Supabase insert error:', error);
+        if (!isProd) {
+          console.error('Supabase insert error:', error);
+        }
         
         // Check if it's a duplicate email error (status 409 or error code 23505)
         if (response.status === 409 || (error.code === '23505') || 
@@ -121,7 +140,9 @@ export default async function handler(req, res) {
     }
 
   } catch (error) {
-    console.error('Subscription error:', error);
+    if (!isProd) {
+      console.error('Subscription error:', error);
+    }
     return res.status(500).json({ message: 'Server error, please try again' });
   }
 } 
